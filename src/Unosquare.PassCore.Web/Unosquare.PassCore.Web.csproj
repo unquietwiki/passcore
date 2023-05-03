@@ -21,7 +21,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="SimpleBase" Version="3.0.2" />
+		<PackageReference Include="SimpleBase" Version="4.0.0" />
 		<PackageReference Include="zxcvbn-core" Version="7.0.92" />
 		<PackageReference Include="Unosquare.Swan" Version="3.0.0" />
 	</ItemGroup>
