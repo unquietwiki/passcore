@@ -2,28 +2,30 @@
 ![Buils status](https://github.com/unosquare/passcore/workflows/ASP.NET%20Core%20CI/badge.svg)
 
 ![Passcore Logo](https://github.com/unosquare/passcore/raw/master/src/Unosquare.PassCore.Web/ClientApp/assets/images/passcore-logo.png)
+
 # PassCore: A self-service password change utility for Active Directory
 
 *:star: Please star this project if you find it useful!*
 
-- [Overview](#overview)
-  - [Features](#features)
-- [Installation on IIS](#installation-on-iis)
-- [PowerShell Installer](#powershell-installer)
-- [Docker](#docker)
-- [Linux](#linux)
-- [LDAP Provider](#ldap-provider)
-- [Pwned Password Support](#pwned-password-support)
-- [Customization and Configuration](#customization-and-configuration)
-  - [Running as a sub application](#running-as-a-sub-application)
-- [Troubleshooting](#troubleshooting)
-  - [LDAP Support](#ldap-support)
-- [License](#license)
-- [passcorepro](#passcorepro)
+- [PassCore: A self-service password change utility for Active Directory](#passcore-a-self-service-password-change-utility-for-active-directory)
+  - [Overview](#overview)
+    - [Features](#features)
+  - [Installation on IIS](#installation-on-iis)
+  - [PowerShell Installer](#powershell-installer)
+  - [Linux](#linux)
+  - [Docker](#docker)
+  - [LDAP Provider](#ldap-provider)
+  - [Pwned Password Support](#pwned-password-support)
+  - [Customization and Configuration](#customization-and-configuration)
+    - [Running as a sub-application](#running-as-a-sub-application)
+  - [Troubleshooting](#troubleshooting)
+    - [LDAP Support](#ldap-support)
+  - [License](#license)
+  - [passcorepro](#passcorepro)
 
 ## Overview
 
-PassCore is a very simple 1-page web application written in [C#](https://docs.microsoft.com/en-us/dotnet/csharp/), using [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/getting-started/), [Material UI (React Components)](https://material-ui.com/), and [Microsoft Directory Services](https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices) (Default provider). 
+PassCore is a very simple 1-page web application written in [C#](https://docs.microsoft.com/en-us/dotnet/csharp/), using [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/getting-started/), [Material UI (React Components)](https://material-ui.com/), and [Microsoft Directory Services](https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices) (Default provider).
 
 It allows users to change their Active Directory/LDAP password on their own, provided the user is not disabled.
 
@@ -58,7 +60,7 @@ PassCore has the following features:
     - If you download the source code you need to run the following command via an Command Prompt. Make sure you start the Command Prompt with the Administrator option.
     - `dotnet publish --configuration Release --runtime win-x64 --output "<path>"`
     - The `<path>` is the directory where you will be serving the website from.
-1. Install the [.NET Core 5.0.1 Windows Server Hosting bundle](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-aspnetcore-5.0.1-windows-hosting-bundle-installer).
+1. Install the [latest .NET Core 6 Windows Server Hosting bundle](https://dotnet.microsoft.com/en-us/download/dotnet/6.0).
 1. Go to your *IIS Manager*, Right-click on *Application Pools* and select *Add Application Pool*.
 1. A dialog appears. Under Name enter **PassCore Application Pool**, Under .NET CLR Version select **No Managed Code** and finally, under Managed pipeline mode select **Integrated**. Click OK after all fields have been set.
 1. Now, right-click on the application pool you just created in the previous step and select *Advanced Settings ...*. Change the *Start Mode* to **AlwaysRunning**, and the *Idle Time-out (minutes)* to **0**. Click on *OK*. This will ensure PassCore stays responsive even after long periods of inactivity.
@@ -66,7 +68,7 @@ PassCore has the following features:
 1. A dialog appears. Under *Site name*, enter **PassCore Website**. Under *Application pool* click on *Select* and ensure you select **PassCore Application Pool**. Under *Physical path*, click on the ellipsis *(...)*, navigate to the folder where you extracted PassCore.
     - **Important:** Make sure the Physical path points to the *parent* folder which is the one containing the files, *logs* and *wwwroot* folders.
     - **NOTE:** If the folder `logs` is not there you can created. To enable the logs you need to change `stdoutLogEnabled` to `true` in the `web.config` file. You need to add *Full Control* permissions to your IIS Application Pool account (see Troubleshooting).
-1. Under the *Binding section* of the same dialog, configure the *Type* to be **https**, set *IP Address* to **All Unassigned**, the *Port* to **443** and the *Hostname* to something like **password.yourdomain.com**. Under *SSL Certificate* select a certificate that matches the Hostname you provided above. If you don't know how to install a certificate, please refer to [SSL Certificate Install on IIS 8](https://www.digicert.com/ssl-certificate-installation-microsoft-iis-8.htm) or [SSL Certificate Install on IIS 10](https://www.digicert.com/csr-creation-ssl-installation-iis-10.htm) , in order to install a proper certificate.
+1. Under the *Binding section* of the same dialog, configure the *Type* to be **https**, set *IP Address* to **All Unassigned**, the *Port* to **443** and the *Hostname* to something like **password.yourdomain.com**. Under *SSL Certificate* select a certificate that matches the Hostname you provided above. If you don't know how to install a certificate, please refer to [the digicert article "IIS 10: Create CSR and Install SSL Certificate"](https://www.digicert.com/kb/csr-creation-ssl-installation-iis-10.htm), or the [Microsoft knowledgbase](https://learn.microsoft.com/en-us/troubleshoot/developer/webapps/iis/www-administration-management/enable-ssl-all-customers), in order to install a proper certificate.
     - **Important:** Do not serve this website without an SSL certificate because requests and responses will be transmitted in cleartext and an attacker could easily retrieve these messages and collect usernames and passwords.
 1. Click *OK* and navigate to `https://password.yourdomain.com` (the hostname you previously set). If all is set then you should be able to see the PassCore tool show up in your browser.
 
@@ -74,21 +76,22 @@ PassCore has the following features:
 
 ## PowerShell Installer
 
-Use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the [.NET Core 5.0.1 Windows Server Hosting bundle](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-aspnetcore-5.0.1-windows-hosting-bundle-installer) and enabled World Wide Web publishing service:
+Use PowerShell to download and setup Passcore using the following command line, just make sure you have installed the [latest .NET Core 6 Windows Server Hosting bundle](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and enabled World Wide Web publishing service:
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1'))
 ```
 
-Using the command shown above will install to the folder `C:\passcore` and using the HTTP Port 8080 with the default (localhost) binding. 
+Using the command shown above will install to the folder `C:\passcore` and using the HTTP Port 8080 with the default (localhost) binding.
 
-If you want to customize your installation please download the [installer script](https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1) and 
+If you want to customize your installation please download the [installer script](https://raw.githubusercontent.com/unosquare/passcore/master/Installer.ps1) and
 the [IIS setup script](https://raw.githubusercontent.com/unosquare/passcore/master/IISSetup.ps1).
 
-**NOTE:** You need [PowerShell version 5 or better](https://docs.microsoft.com/en-us/powershell/scripting/setup/windows-powershell-system-requirements?view=powershell-6) 
+**NOTE:** You need [PowerShell version 5 or better](https://docs.microsoft.com/en-us/powershell/scripting/setup/windows-powershell-system-requirements?view=powershell-6)
 to execute the script.
 
 ## Linux
+
 We recommend use the docker image and redirect the traffic to nginx.
 
 ## Docker
@@ -118,6 +121,7 @@ The configuration of the LDAP Provider is slightly different. for example, the A
 *WIP*
 
 ## Pwned Password Support
+
 Sometimes a simple set of checks and some custom logic is enough to rule out non-secure trivial passwords. Those checks are always performed locally. There are, however, many more unsafe passwords that cannot be ruled out programatically. For those cases there are no simple set of rules that could be used to check those passwords that should never be used: You either need a local DB with a list of banned passwords or use an external API service.
 
 Here is where Pwned Password API comes into play. Pwned Passwords are more than half a billion passwords which have previously been exposed in different data breaches along the years. The use of this service is free and secure. You can read more about this service in [Pwned Passwords overview](https://haveibeenpwned.com/API/v2#PwnedPasswords)
@@ -141,7 +145,7 @@ The most relevant configuration entries are shown below. Make sure you make your
   - Find the `MinimumScore` entry and set it to a numeric value (without quotes) between 1 and 4, where 1 is a bit secure and 4 is the most secure. Set to 0, for deactivate the validation.
 - To enable restricted group checking
   1. Find the `RestrictedADGroups` entry and add any groups that are sensitive.  Accounts in these groups (directly or inherited) will not be able to change their password.
-- Find the `DefaultDomain` entry and set it to your default Active Directory domain. This should eliminate confusion about using e-mail domains / internal domain names. **NOTE:** if you are using a subdomain, and you have errors, please try using your top-level domain. 
+- Find the `DefaultDomain` entry and set it to your default Active Directory domain. This should eliminate confusion about using e-mail domains / internal domain names. **NOTE:** if you are using a subdomain, and you have errors, please try using your top-level domain.
 - To provide an optional parameter to the URL to set the username text box automatically
   1. `http://mypasscore.com/?userName=someusername`
   2. This helps the user in case they forgot their username and, also comes in handy when sending a link to the application or having it embedded into another application where the user is already signed in.
@@ -166,7 +170,7 @@ To run as a sub-application you need to modify the `base href="/"` value in the 
 
 ## Troubleshooting
 
-- At first run if you find an error (e.g. **HTTP Error 502.5**) first ensure you have installed [.NET Core 3.1.0 Windows Server Hosting bundle](https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-3.1.0-windows-hosting-bundle-installer), or better.
+- At first run if you find an error (e.g. **HTTP Error 502.5**) first ensure you have installed [latest .NET Core 6 Windows Server Hosting bundle](https://dotnet.microsoft.com/en-us/download/dotnet/6.0), or better.
 - If you find an [HTTP Error 500](https://stackoverflow.com/questions/45415832/http-error-500-19-in-iis-10-and-visual-studio-2017) you can try
   1. Press Win Key+R to Open Run Window
   1. in the Run Window, enter "OptionalFeatures.exe"
@@ -176,10 +180,12 @@ To run as a sub-application you need to modify the `base href="/"` value in the 
   1. Check the features.
 - If you / your user's current password never seems to be accepted for reset; the affected person may need to use a domain-connected PC to log in and reset their password on it first. Updated group policy settings could be blocking user changes, until a local login is completed.
 - You can add permissions to your log folder using [icacls](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/icacls)
+
 ```
 icacls "<logfolder>/" /grant "IIS AppPool\<passcoreAppPoolAccount>:M" /t
 ```
-- If you find [Exception from HRESULT: 0x800708C5 .The password does not meet the password policy requirements](http://blog.cionsystems.com/?p=907) trying to change a password. Set 'Minimum password age' to 0 at 'Default Domain Policy'.
+
+- If you find **Exception from HRESULT: 0x800708C5 .The password does not meet the password policy requirements** while trying to change a password, set 'Minimum password age' to 0 at 'Default Domain Policy'.
 
 ### LDAP Support
 
@@ -202,10 +208,10 @@ However, you can access a complete, brand new version with new features and tool
 Introducing passcorepro.
 This new, enhanced version of our self-service password manager comes with new features such as:
 
-*	Display and manage your Active Directory information with our user profile system.
-*	Search for any staff member with the new Directory grid.
-*	Forgot your password? We help you reset it via Email or SMS (via [Twillio Verify API](https://www.twilio.com/docs/verify/api) or custom SMS Gateway).
-*	Administrate your AD using our new Dashboard tool.
-*	Parlez-vous français? You can now add any language to PassCorePro!
+- Display and manage your Active Directory information with our user profile system.
+- Search for any staff member with the new Directory grid.
+- Forgot your password? We help you reset it via Email or SMS (via [Twillio Verify API](https://www.twilio.com/docs/verify/api) or custom SMS Gateway).
+- Administrate your AD using our new Dashboard tool.
+- Parlez-vous français? You can now add any language to PassCorePro!
 
-Go to our store and download a free trial: https://store.unosquare.com/PasscorePro
+Go to our store and download a free trial: <https://store.unosquare.com/PasscorePro>
