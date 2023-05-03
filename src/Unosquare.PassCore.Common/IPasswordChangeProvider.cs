@@ -58,6 +58,5 @@ public interface IPasswordChangeProvider
 
         // Step 7
         return d[n, m];
-
     }
 }

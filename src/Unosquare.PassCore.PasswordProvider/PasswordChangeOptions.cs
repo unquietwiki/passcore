@@ -67,7 +67,7 @@ public class PasswordChangeOptions : IAppSettings
     /// <inheritdoc />
     public string[] LdapHostnames
     {
-        get => _ldapHostnames ?? new string[] { };
+        get => _ldapHostnames ?? System.Array.Empty<string>();
         set => _ldapHostnames = value;
     }
 

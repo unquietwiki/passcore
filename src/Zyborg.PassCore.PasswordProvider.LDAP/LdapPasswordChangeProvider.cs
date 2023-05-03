@@ -225,14 +225,14 @@ public class LdapPasswordChangeProvider : IPasswordChangeProvider
 
         while (escapeIndex >= 0)
         {
-            buff.Append(cleanUsername.Substring(copyFrom, escapeIndex));
-            buff.Append($"\\{cleanUsername[escapeIndex]:X}");
+            buff.Append(cleanUsername, copyFrom, escapeIndex);
+            buff.Append('\\').AppendFormat("{0:X}", cleanUsername[escapeIndex]);
             copyFrom = escapeIndex + 1;
             escapeIndex = cleanUsername.IndexOfAny(escape, copyFrom);
         }
 
         if (copyFrom < maxLen)
-            buff.Append(cleanUsername.Substring(copyFrom));
+            buff.Append(cleanUsername, copyFrom, cleanUsername.Length - copyFrom);
         cleanUsername = buff.ToString();
         _logger.LogWarning("Had to clean username: [{0}] => [{1}]", username, cleanUsername);
 

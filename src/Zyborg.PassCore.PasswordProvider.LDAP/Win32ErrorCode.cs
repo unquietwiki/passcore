@@ -5,7 +5,7 @@ namespace Zyborg.PassCore.PasswordProvider.LDAP;
 /// <summary>
 /// Represents a container of Win32 Error Code.
 /// </summary>
-public class Win32ErrorCode
+public sealed class Win32ErrorCode
 {
     /// <summary>
     /// Based on
@@ -103,7 +103,7 @@ public class Win32ErrorCode
     /// Returns a hash code for this instance.
     /// </summary>
     /// <returns>
-    /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+    /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
     /// </returns>
     public override int GetHashCode() => Code;
 

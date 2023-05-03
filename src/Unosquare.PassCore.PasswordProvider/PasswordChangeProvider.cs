@@ -284,7 +284,7 @@ public class PasswordChangeProvider : IPasswordChangeProvider
             return new PrincipalContext(ContextType.Domain);
         }
 
-        var domain = $"{_options.LdapHostnames.First()}:{_options.LdapPort}";
+        var domain = $"{_options.LdapHostnames[0]}:{_options.LdapPort}";
         _logger.LogWarning($"Not using AutomaticContext  {domain}");
 
         return new PrincipalContext(
@@ -299,7 +299,7 @@ public class PasswordChangeProvider : IPasswordChangeProvider
         DirectoryEntry entry = _options.UseAutomaticContext
             ? Domain.GetCurrentDomain().GetDirectoryEntry()
             : new DirectoryEntry(
-                $"{_options.LdapHostnames.First()}:{_options.LdapPort}",
+                $"{_options.LdapHostnames[0]}:{_options.LdapPort}",
                 _options.LdapUsername,
                 _options.LdapPassword
             );

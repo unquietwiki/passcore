@@ -69,7 +69,7 @@ public class PasswordController : Controller
         }
 
         // Validate the model
-        if (ModelState.IsValid == false)
+        if (!ModelState.IsValid)
         {
             _logger.LogWarning("Invalid model, validation failed");
 
@@ -79,7 +79,7 @@ public class PasswordController : Controller
         // Validate the Captcha
         try
         {
-            if (await ValidateRecaptcha(model.Recaptcha).ConfigureAwait(false) == false)
+            if (!await ValidateRecaptcha(model.Recaptcha).ConfigureAwait(false))
                 throw new InvalidOperationException("Invalid Recaptcha response");
         }
         catch (Exception ex)
@@ -131,7 +131,7 @@ public class PasswordController : Controller
         if (_options.Recaptcha != null && string.IsNullOrWhiteSpace(_options.Recaptcha.PrivateKey))
             return true;
 
-        if (_options.Recaptcha == null || string.IsNullOrEmpty(recaptchaResponse) == false)
+        if (_options.Recaptcha == null || !string.IsNullOrEmpty(recaptchaResponse))
             return false;
 
         var requestUrl = new Uri(

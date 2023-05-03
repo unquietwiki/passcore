@@ -21,7 +21,11 @@ public static class PwnedSearch
     {
         try
         {
-            SHA1 sha = new SHA1CryptoServiceProvider();
+#pragma warning disable CA5350 // Do Not Use Weak Cryptographic Algorithms
+#pragma warning disable SYSLIB0021 // Type or member is obsolete
+            using SHA1 sha = new SHA1CryptoServiceProvider();
+#pragma warning restore SYSLIB0021 // Type or member is obsolete
+#pragma warning restore CA5350 // Do Not Use Weak Cryptographic Algorithms
             byte[] data = sha.ComputeHash(Encoding.UTF8.GetBytes(plaintext));
 
             // Loop through each byte of the hashed data and format each one as a hexadecimal string.
